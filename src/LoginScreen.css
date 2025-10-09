@@ -1,0 +1,29 @@
+.Login {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.Login input {
+    padding: 12px;
+    margin-bottom: 15px;
+    width: 250px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.Login button {
+    padding: 12px;
+    margin-top: 16px;
+    width: 278px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
