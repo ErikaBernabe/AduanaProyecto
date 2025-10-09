@@ -16,8 +16,14 @@ p {
     align-items: center;
 }
 
-#Document {
+.Icons {
+    padding-right: 10px;
+}
+
+.Document-Button {
     display: flex;
+    align-items: center;
+    padding-left: 20px;
     justify-self: center;
     justify-content: left;
     margin-top: 24px;
