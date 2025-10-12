@@ -1,19 +1,32 @@
-import { useState } from 'react';
+//Librerias
 import './InspectionScreen.css'
 import { FaFileAlt, FaRegFileAlt, FaRegFileImage } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { upload } from '@testing-library/user-event/dist/upload';
 
 const InspectionScreen = () => {
+  //Lista de documentos y status
+  const [documents, setDocuments] = useState([
+    {id: 1, name: 'Datos del conductor', icon:<FaRegFileImage/>, upload: false},
+    {id: 2, name: 'DODA', icon:<FaRegFileAlt/>, upload: false},
+    {id: 3, name: 'E-Manifest', icon:<FaRegFileAlt/>, upload: false},
+    {id: 4, name: 'Prefile', icon:<FaRegFileAlt/>, upload: false},
+  ]);
+
+  //Estructura de la pagina 
   return (
-    <div className="Inspection">
+    <div className="inspection">
         <h1>Inspección</h1>
         <p>Sube o escanea<br/>los documentos.</p>
-        <div className='Buttons'>
-            <button className='Document-Button'><FaRegFileImage className='Icons'/>Datos del conductor</button>
-            <button className='Document-Button'><FaRegFileAlt className='Icons'/>DODA</button>
-            <button className='Document-Button'><FaRegFileAlt className='Icons'/>E-Manifest</button>
-            <button className='Document-Button'><FaRegFileAlt className='Icons'/>Prefile</button>
+        <div className='document-list'>
+            {documents.map((doc) => (
+              <button key={doc.id} className='document-button'>
+                <span className='icons'>{doc.icon}</span>
+                {doc.name}
+              </button>
+            ))}
         </div>
-        <button className='Validation'>Validar documentos</button>
+        <button className='validation'>Validar documentos</button>
     </div>
   );
 }

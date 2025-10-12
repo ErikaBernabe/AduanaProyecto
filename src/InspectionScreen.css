@@ -1,4 +1,4 @@
-.Inspection {
+.inspection {
     padding: 24px;
     text-align: center;
 }
@@ -7,7 +7,7 @@ p {
     font-size: 24px;
 }
 
-.buttons {
+.document-list {
     padding: 12px;
     gap: 16px;
     display: flex;
@@ -16,11 +16,11 @@ p {
     align-items: center;
 }
 
-.Icons {
+.icons {
     padding-right: 10px;
 }
 
-.Document-Button {
+.document-button {
     display: flex;
     align-items: center;
     padding-left: 20px;
@@ -39,7 +39,7 @@ button {
     cursor: pointer;
 }
 
-.Validation {
+.validation {
     padding: 12px;
     margin-top: 24px;
     width: 278px;
