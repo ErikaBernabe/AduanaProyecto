@@ -1,16 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-import LoginScreen from "./LoginScreen";
-import InspectionScreen from './InspectionScreen';
 import { useState } from 'react';
+import './styles/App.css';
+import LoginScreen from './pages/LoginScreen';
+import InspectionScreen from './pages/InspectionScreen';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const handleLogin = () => {
-    setIsLoggedIn(true)
-  }
+    setIsLoggedIn(true);
+  };
+
   return (
-    isLoggedIn ? <InspectionScreen></InspectionScreen> : <LoginScreen onLoginSuccess = {handleLogin}></LoginScreen>
+    <>
+      {isLoggedIn ? (
+        <InspectionScreen />
+      ) : (
+        <LoginScreen onLoginSuccess={handleLogin} />
+      )}
+    </>
   );
 }
 
