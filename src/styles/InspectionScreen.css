@@ -33,6 +33,34 @@ p {
     width: 278px;
     height: 75px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: all 0.2s;
+    background-color: #fff;
+}
+
+.document-button:hover {
+    border-color: #2563eb;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.document-button.completed {
+    border-color: #10b981;
+    background-color: #f0fdf4;
+}
+
+.check-icon {
+    position: absolute;
+    right: 16px;
+    color: #10b981;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 button {
@@ -51,4 +79,26 @@ button {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: all 0.2s;
+}
+
+.validation:hover:not(:disabled) {
+    background-color: #1d4ed8;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.validation:disabled {
+    background-color: #cbd5e1;
+    cursor: not-allowed;
+}
+
+.progress-indicator {
+    font-size: 16px;
+    color: #666;
+    margin-top: 16px;
+    font-weight: 500;
+}
+
+.progress-indicator.all-completed {
+    color: #10b981;
 }

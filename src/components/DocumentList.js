@@ -1,7 +1,7 @@
 import React from 'react';
 import DocumentButton from './DocumentButton';
 
-const DocumentList = ({ documents, onDocumentClick }) => {
+const DocumentList = ({ documents, onDocumentClick, isDocumentCompleted }) => {
   return (
     <div className='document-list'>
       {documents.map((doc) => (
@@ -9,6 +9,7 @@ const DocumentList = ({ documents, onDocumentClick }) => {
           key={doc.id}
           document={doc}
           onClick={onDocumentClick}
+          isCompleted={isDocumentCompleted(doc.id)}
         />
       ))}
     </div>
