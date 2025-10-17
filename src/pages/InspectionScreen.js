@@ -87,29 +87,46 @@ const InspectionScreen = () => {
 
   return (
     <div className="inspection">
-      <h1>Inspección</h1>
-      <p>
-        Sube o escanea<br />
-        los documentos.
-      </p>
+      <div className="inspection-header">
+        <img src="/fronterainspeccion.png" alt="Logo Inspección" className="inspection-logo" />
+        <h1>Inspección de Documentos</h1>
+        <p className="inspection-subtitle">
+          Sube o escanea los documentos requeridos para la exportación
+        </p>
+      </div>
 
-      <DocumentList
-        documents={documents}
-        onDocumentClick={handleDocumentClick}
-        isDocumentCompleted={isDocumentCompleted}
-      />
+      <div className="inspection-content">
+        <DocumentList
+          documents={documents}
+          onDocumentClick={handleDocumentClick}
+          isDocumentCompleted={isDocumentCompleted}
+        />
 
-      <p className={`progress-indicator ${allCompleted ? 'all-completed' : ''}`}>
-        {completedCount} de {documents.length} documentos capturados
-      </p>
+        {completedCount > 0 && (
+          <div className="progress-card">
+            <div className="progress-info">
+              <span className="progress-label">Progreso</span>
+              <span className={`progress-count ${allCompleted ? 'all-completed' : ''}`}>
+                {completedCount} / {documents.length}
+              </span>
+            </div>
+            <div className="progress-bar">
+              <div
+                className="progress-fill"
+                style={{ width: `${(completedCount / documents.length) * 100}%` }}
+              />
+            </div>
+          </div>
+        )}
 
-      <button
-        className='validation'
-        onClick={handleValidateDocuments}
-        disabled={!allCompleted}
-      >
-        Validar documentos
-      </button>
+        <button
+          className={`validation ${allCompleted ? 'ready' : ''}`}
+          onClick={handleValidateDocuments}
+          disabled={!allCompleted}
+        >
+          {allCompleted ? '✓ Validar Documentos' : 'Completa todos los documentos'}
+        </button>
+      </div>
 
       <DriverDataModal
         isOpen={isDriverModalOpen}

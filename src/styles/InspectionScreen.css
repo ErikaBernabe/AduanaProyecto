@@ -1,104 +1,355 @@
 .inspection {
-    padding: 24px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: 32px 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.inspection::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 12s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.inspection::after {
+    content: '';
+    position: absolute;
+    bottom: -15%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(147, 197, 253, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 15s ease-in-out infinite reverse;
+    pointer-events: none;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(20px, -20px) scale(1.05);
+    }
+}
+
+/* Header */
+.inspection-header {
     text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
 }
 
-p {
-    font-size: 24px;
+.inspection-logo {
+    width: 260px;
+    height: auto;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
+    transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-.document-list {
-    padding: 12px;
-    gap: 16px;
+.inspection-logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.16));
+}
+
+.inspection-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.inspection-subtitle {
+    font-size: 16px;
+    color: #64748b;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* Content Container */
+.inspection-content {
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* Progress Card */
+.progress-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.08),
+        0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.progress-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.1),
+        0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.progress-info {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    margin-bottom: 12px;
+}
+
+.progress-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.progress-count {
+    font-size: 24px;
+    font-weight: 700;
+    color: #3b82f6;
+    transition: color 0.3s ease;
+}
+
+.progress-count.all-completed {
+    color: #10b981;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+    border-radius: 999px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Document List */
+.document-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
 }
 
 .icons {
-    padding-right: 10px;
+    margin-right: 16px;
+    font-size: 28px;
+    color: #3b82f6;
+    transition: transform 0.3s ease;
 }
 
 .document-button {
     display: flex;
     align-items: center;
-    padding-left: 20px;
-    justify-self: center;
-    justify-content: left;
-    margin-top: 24px;
-    font-size: 24px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    width: 278px;
-    height: 75px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px 24px;
+    justify-content: flex-start;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    background: #ffffff;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     position: relative;
-    transition: all 0.2s;
-    background-color: #fff;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #1e293b;
 }
 
 .document-button:hover {
-    border-color: #2563eb;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border-color: #3b82f6;
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+    transform: translateY(-2px);
+}
+
+.document-button:hover .icons {
+    transform: scale(1.1);
 }
 
 .document-button.completed {
     border-color: #10b981;
-    background-color: #f0fdf4;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.document-button.completed:hover {
+    border-color: #059669;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15);
+}
+
+.document-button.completed .icons {
+    color: #10b981;
 }
 
 .check-icon {
     position: absolute;
-    right: 16px;
+    right: 20px;
     color: #10b981;
-    font-size: 20px;
+    font-size: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    background-color: #fff;
+    width: 32px;
+    height: 32px;
+    background: #ffffff;
     border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2);
+    animation: checkPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-button {
-    cursor: pointer;
+@keyframes checkPop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
+/* Validation Button */
 .validation {
-    padding: 12px;
-    margin-top: 24px;
-    width: 278px;
-    height: 60px;
-    font-size: 20px;
-    font-weight: bold;
-    background-color: #2563eb;
-    color: white;
+    width: 100%;
+    padding: 18px 24px;
+    font-size: 18px;
+    font-weight: 600;
+    background: #cbd5e1;
+    color: #64748b;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.validation:hover:not(:disabled) {
-    background-color: #1d4ed8;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.validation:disabled {
-    background-color: #cbd5e1;
+    border-radius: 12px;
     cursor: not-allowed;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
 }
 
-.progress-indicator {
-    font-size: 16px;
-    color: #666;
-    margin-top: 16px;
-    font-weight: 500;
+.validation.ready {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
 }
 
-.progress-indicator.all-completed {
-    color: #10b981;
+.validation.ready:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+}
+
+.validation.ready:active {
+    transform: translateY(-1px);
+}
+
+.validation.ready::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.validation.ready:hover::before {
+    left: 100%;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .inspection {
+        padding: 24px 16px;
+    }
+
+    .inspection-logo {
+        width: 200px;
+    }
+
+    .inspection-header h1 {
+        font-size: 28px;
+    }
+
+    .inspection-subtitle {
+        font-size: 14px;
+    }
+
+    .progress-card {
+        padding: 20px;
+    }
+
+    .document-button {
+        padding: 16px 20px;
+        font-size: 16px;
+    }
+
+    .icons {
+        font-size: 24px;
+        margin-right: 12px;
+    }
+
+    .validation {
+        padding: 16px 20px;
+        font-size: 16px;
+    }
 }
