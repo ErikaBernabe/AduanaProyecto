@@ -12,8 +12,8 @@ const LoginScreen = ({ onLoginSuccess }) => {
 
   return (
     <div className='Login'>
-      <img src="/frontera.png" alt="Logo EFrontera" className="login-logo" />
       <form className='login-form' onSubmit={handleSubmit(onSubmit)}>
+        <img src="/frontera.png" alt="Logo EFrontera" className="login-logo" />
         <h2>Crucero Fronterizo</h2>
 
         <input
