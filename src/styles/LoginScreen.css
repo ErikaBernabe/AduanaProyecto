@@ -4,26 +4,182 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    position: relative;
+    overflow: hidden;
 }
 
-.Login input {
-    padding: 12px;
-    margin-bottom: 15px;
-    width: 250px;
+.Login::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -15%;
+    width: 700px;
+    height: 700px;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.25) 0%, transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(96, 165, 250, 0.18) 0%, transparent 50%);
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite;
+}
+
+.Login::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    right: -15%;
+    width: 800px;
+    height: 800px;
+    background:
+        radial-gradient(circle at 60% 40%, rgba(147, 197, 253, 0.3) 0%, transparent 45%),
+        radial-gradient(circle at 30% 70%, rgba(59, 130, 246, 0.2) 0%, transparent 55%);
+    border-radius: 50%;
+    animation: float 10s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(20px, -20px) scale(1.05);
+    }
+}
+
+.login-form {
+    background: #ffffff;
+    padding: 48px 40px;
+    border-radius: 20px;
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.08),
+        0 2px 8px rgba(0, 0, 0, 0.04),
+        0 0 60px rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    animation: fadeInUp 0.6s ease;
+    overflow: hidden;
+}
+
+.login-form::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    animation: pulse 4s ease-in-out infinite;
+}
+
+.login-form::after {
+    content: '';
+    position: absolute;
+    bottom: -40%;
+    left: -25%;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(147, 197, 253, 0.18) 0%, transparent 65%);
+    border-radius: 50%;
+    z-index: 0;
+    animation: pulse 5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-form h2 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 32px;
+    font-size: 28px;
+    position: relative;
+    z-index: 1;
+}
+
+.login-logo {
+    width: 220px;
+    height: auto;
+    margin-bottom: 24px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.12));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.login-logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.16));
+}
+
+.login-form input {
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    width: 280px;
     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    outline: none;
+    background: #f8fafc;
+    position: relative;
+    z-index: 1;
 }
 
-.Login button {
-    padding: 12px;
-    margin-top: 16px;
-    width: 278px;
+.login-form input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background: #ffffff;
+}
+
+.login-form button {
+    padding: 14px;
+    margin-top: 8px;
+    width: 314px;
     font-size: 16px;
     font-weight: bold;
-    background-color: #2563eb;
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    position: relative;
+    z-index: 1;
+}
+
+.login-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+}
+
+.login-form button:active {
+    transform: translateY(0);
 }

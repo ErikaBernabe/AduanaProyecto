@@ -11,23 +11,26 @@ const LoginScreen = ({ onLoginSuccess }) => {
   };
 
   return (
-    <form className='Login' onSubmit={handleSubmit(onSubmit)}>
-      <h2>Crucero Fronterizo</h2>
+    <div className='Login'>
+      <img src="/frontera.png" alt="Logo EFrontera" className="login-logo" />
+      <form className='login-form' onSubmit={handleSubmit(onSubmit)}>
+        <h2>Crucero Fronterizo</h2>
 
-      <input
-        placeholder="Ingrese su Email"
-        type="email"
-        {...register("usuario")}
-      />
+        <input
+          placeholder="Ingrese su Email"
+          type="email"
+          {...register("usuario")}
+        />
 
-      <input
-        placeholder="Ingrese su contraseña"
-        type="password"
-        {...register("contraseña")}
-      />
+        <input
+          placeholder="Ingrese su contraseña"
+          type="password"
+          {...register("contraseña")}
+        />
 
-      <button type='submit'>Ingresar</button>
-    </form>
+        <button type='submit'>Ingresar</button>
+      </form>
+    </div>
   );
 };
 
