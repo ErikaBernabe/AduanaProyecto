@@ -3,9 +3,11 @@ import DocumentList from '../components/DocumentList';
 import DriverDataModal from '../components/DriverDataModal';
 import DocumentCaptureModal from '../components/DocumentCaptureModal';
 import { INITIAL_DOCUMENTS } from '../constants/documents';
+import { useToast } from '../hooks/useToast';
 import '../styles/InspectionScreen.css';
 
 const InspectionScreen = () => {
+  const toast = useToast();
   const [documents] = useState(INITIAL_DOCUMENTS);
   const [isDriverModalOpen, setIsDriverModalOpen] = useState(false);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
@@ -78,7 +80,7 @@ const InspectionScreen = () => {
 
   const handleValidateDocuments = () => {
     if (!allCompleted) {
-      alert('Por favor completa todos los documentos antes de validar');
+      toast.warning('Por favor completa todos los documentos antes de validar');
       return;
     }
     console.log("Validando documentos...", capturedData);

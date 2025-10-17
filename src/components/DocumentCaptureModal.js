@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
 import CameraCapture from './CameraCapture';
+import { useToast } from '../hooks/useToast';
 import '../styles/DocumentCaptureModal.css';
 
 const DocumentCaptureModal = ({ isOpen, onClose, onSave, documentName, initialImage }) => {
   const [capturedImage, setCapturedImage] = useState(initialImage || null);
+  const toast = useToast();
 
   const handleSave = () => {
     if (!capturedImage) {
-      alert(`Por favor captura la foto del documento ${documentName}`);
+      toast.warning(`Por favor captura la foto del documento ${documentName}`);
       return;
     }
 

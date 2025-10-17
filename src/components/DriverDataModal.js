@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
 import CameraCapture from './CameraCapture';
+import { useToast } from '../hooks/useToast';
 import '../styles/DriverDataModal.css';
 
 const DriverDataModal = ({ isOpen, onClose, onSave, initialData }) => {
   const [driverName, setDriverName] = useState(initialData?.name || '');
   const [tractorPlate, setTractorPlate] = useState(initialData?.tractorPlate || null);
   const [trailerPlate, setTrailerPlate] = useState(initialData?.trailerPlate || null);
+  const toast = useToast();
 
   const handleSave = () => {
     if (!driverName.trim()) {
-      alert('Por favor ingresa el nombre del operador');
+      toast.warning('Por favor ingresa el nombre del operador');
       return;
     }
     if (!tractorPlate) {
-      alert('Por favor captura la foto de la placa del tracto');
+      toast.warning('Por favor captura la foto de la placa del tracto');
       return;
     }
     if (!trailerPlate) {
-      alert('Por favor captura la foto de la placa del remolque');
+      toast.warning('Por favor captura la foto de la placa del remolque');
       return;
     }
 
