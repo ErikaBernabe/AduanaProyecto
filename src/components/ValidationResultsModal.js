@@ -51,22 +51,22 @@ const ValidationResultsModal = ({ isOpen, onClose, validationData }) => {
 
           {/* Summary Section */}
           <div className="summary-card">
-            <h3>📊 RESUMEN GENERAL</h3>
+            <h3> RESUMEN GENERAL</h3>
             <div className="summary-content">
               <div className="summary-status">
                 <span
                   className="status-badge"
                   style={{ backgroundColor: getStatusColor(summary.overall_status) }}
                 >
-                  {summary.overall_status === 'success' ? '✅ Validación Exitosa' :
-                   summary.overall_status === 'partial' ? '⚠️ Validación Parcial' :
-                   '❌ Validación Fallida'}
+                  {summary.overall_status === 'success' ? ' Validación Exitosa' :
+                   summary.overall_status === 'partial' ? ' Validación Parcial' :
+                   ' Validación Fallida'}
                 </span>
               </div>
 
               <div className="summary-stats">
                 <div className="stat-row">
-                  <label>✅ Reglas Pasadas:</label>
+                  <label> Reglas Pasadas:</label>
                   <div className="stat-bar-container">
                     <div className="stat-bar">
                       <div
@@ -79,7 +79,7 @@ const ValidationResultsModal = ({ isOpen, onClose, validationData }) => {
                 </div>
 
                 <div className="stat-row">
-                  <label>❌ Reglas Fallidas:</label>
+                  <label> Reglas Fallidas:</label>
                   <div className="stat-bar-container">
                     <div className="stat-bar">
                       <div
@@ -93,13 +93,13 @@ const ValidationResultsModal = ({ isOpen, onClose, validationData }) => {
 
                 {summary.warning_rules > 0 && (
                   <div className="stat-row">
-                    <label>⚠️ Advertencias:</label>
+                    <label> Advertencias:</label>
                     <span className="stat-value">{summary.warning_rules}</span>
                   </div>
                 )}
 
                 <div className="stat-row">
-                  <label>🎯 Confianza IA:</label>
+                  <label> Confianza IA:</label>
                   <div className="stat-bar-container">
                     <div className="stat-bar">
                       <div
@@ -116,7 +116,7 @@ const ValidationResultsModal = ({ isOpen, onClose, validationData }) => {
                 </div>
 
                 <div className="stat-row">
-                  <label>⏱️ Tiempo Procesado:</label>
+                  <label> Tiempo Procesado:</label>
                   <span className="stat-value">{summary.processing_time}s</span>
                 </div>
               </div>
@@ -126,7 +126,7 @@ const ValidationResultsModal = ({ isOpen, onClose, validationData }) => {
           {/* Rules Section */}
           <div className="section-card">
             <div className="section-header" onClick={() => toggleSection('rules')}>
-              <h3>📋 VALIDACIONES POR REGLA</h3>
+              <h3> VALIDACIONES POR REGLA</h3>
               <button className="toggle-button">
                 {expandedSections.rules ? '▼ Colapsar' : '▶ Expandir'}
               </button>
@@ -144,7 +144,7 @@ const ValidationResultsModal = ({ isOpen, onClose, validationData }) => {
           {/* Extraction Section */}
           <div className="section-card">
             <div className="section-header" onClick={() => toggleSection('extraction')}>
-              <h3>🔍 EXTRACCIÓN DE DATOS (IA)</h3>
+              <h3> EXTRACCIÓN DE DATOS (IA)</h3>
               <button className="toggle-button">
                 {expandedSections.extraction ? '▼ Colapsar' : '▶ Expandir'}
               </button>
@@ -162,7 +162,7 @@ const ValidationResultsModal = ({ isOpen, onClose, validationData }) => {
           {/* Technical Info Section */}
           <div className="section-card">
             <div className="section-header" onClick={() => toggleSection('technical')}>
-              <h3>⚙️ INFORMACIÓN TÉCNICA</h3>
+              <h3> INFORMACIÓN TÉCNICA</h3>
               <button className="toggle-button">
                 {expandedSections.technical ? '▼ Colapsar' : '▶ Expandir'}
               </button>
@@ -176,7 +176,7 @@ const ValidationResultsModal = ({ isOpen, onClose, validationData }) => {
                 <p><strong>Timestamp:</strong> {new Date(timestamp).toLocaleString('es-MX')}</p>
                 <p><strong>Tiempo de Proceso:</strong> {summary.processing_time} segundos</p>
                 <div className="technical-note">
-                  ⚠️ <strong>NOTA:</strong> El sistema usa modo "high" detail para mejor precisión de extracción de texto pequeño.
+                   <strong>NOTA:</strong> El sistema usa modo "high" detail para mejor precisión de extracción de texto pequeño.
                 </div>
               </div>
             )}
