@@ -12,6 +12,7 @@ const InspectionScreen = () => {
   const [isDriverModalOpen, setIsDriverModalOpen] = useState(false);
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
+  const [isValidating, setIsValidating] = useState(false);
 
   // Estado para almacenar los datos capturados
   const [capturedData, setCapturedData] = useState({
@@ -78,13 +79,78 @@ const InspectionScreen = () => {
   const completedCount = documents.filter(doc => isDocumentCompleted(doc.id)).length;
   const allCompleted = completedCount === documents.length;
 
-  const handleValidateDocuments = () => {
+  const handleValidateDocuments = async () => {
     if (!allCompleted) {
       toast.warning('Por favor completa todos los documentos antes de validar');
       return;
     }
-    console.log("Validando documentos...", capturedData);
-    // TODO: Lógica para validar documentos con el backend
+
+    setIsValidating(true);
+
+    try {
+      // Get API URL from environment variable
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
+      console.log('Enviando documentos al backend...', {
+        driver: capturedData.driverData.name,
+        apiUrl: API_URL
+      });
+
+      toast.info('Procesando documentos con IA... Esto puede tomar 30-60 segundos');
+
+      // Make POST request to backend
+      const response = await fetch(`${API_URL}/api/validate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(capturedData),
+      });
+
+      const result = await response.json();
+
+      console.log('Respuesta del backend:', result);
+
+      if (response.ok) {
+        if (result.success) {
+          // All validations passed
+          toast.success(result.message || '✓ Todos los documentos son válidos');
+        } else {
+          // Validation failed - show errors
+          const errorCount = result.errors?.length || 0;
+          toast.error(`Se encontraron ${errorCount} error(es) de validación`);
+
+          // Log errors to console for debugging
+          if (result.errors && result.errors.length > 0) {
+            console.log('Errores de validación:');
+            result.errors.forEach(error => {
+              console.log(`[${error.rule_id}] ${error.message}`);
+            });
+
+            // Show first error in detail
+            const firstError = result.errors[0];
+            setTimeout(() => {
+              toast.warning(`${firstError.rule_id}: ${firstError.message}`);
+            }, 1000);
+          }
+        }
+      } else {
+        // HTTP error
+        toast.error(result.detail || 'Error al procesar los documentos');
+        console.error('Error HTTP:', response.status, result);
+      }
+
+    } catch (error) {
+      console.error('Error al conectar con el backend:', error);
+
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        toast.error('No se pudo conectar con el servidor. Verifica que el backend esté corriendo en el puerto 8000');
+      } else {
+        toast.error('Error al validar documentos: ' + error.message);
+      }
+    } finally {
+      setIsValidating(false);
+    }
   };
 
   return (
@@ -122,11 +188,15 @@ const InspectionScreen = () => {
         )}
 
         <button
-          className={`validation ${allCompleted ? 'ready' : ''}`}
+          className={`validation ${allCompleted ? 'ready' : ''} ${isValidating ? 'validating' : ''}`}
           onClick={handleValidateDocuments}
-          disabled={!allCompleted}
+          disabled={!allCompleted || isValidating}
         >
-          {allCompleted ? '✓ Validar Documentos' : 'Completa todos los documentos'}
+          {isValidating
+            ? '⏳ Procesando con IA...'
+            : allCompleted
+              ? '✓ Validar Documentos'
+              : 'Completa todos los documentos'}
         </button>
       </div>
 
