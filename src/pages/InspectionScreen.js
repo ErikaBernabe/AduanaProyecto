@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DocumentList from '../components/DocumentList';
 import DriverDataModal from '../components/DriverDataModal';
 import DocumentCaptureModal from '../components/DocumentCaptureModal';
+import ValidationResultsModal from '../components/ValidationResultsModal';
 import { INITIAL_DOCUMENTS } from '../constants/documents';
 import { useToast } from '../hooks/useToast';
 import '../styles/InspectionScreen.css';
@@ -13,6 +14,8 @@ const InspectionScreen = () => {
   const [isDocumentModalOpen, setIsDocumentModalOpen] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [isValidating, setIsValidating] = useState(false);
+  const [showResultsModal, setShowResultsModal] = useState(false);
+  const [validationResults, setValidationResults] = useState(null);
 
   // Estado para almacenar los datos capturados
   const [capturedData, setCapturedData] = useState({
@@ -96,10 +99,10 @@ const InspectionScreen = () => {
         apiUrl: API_URL
       });
 
-      toast.info('Procesando documentos con IA... Esto puede tomar 30-60 segundos');
+      toast.info('Procesando documentos con IA... Esto puede tomar unos segundos');
 
-      // Make POST request to backend
-      const response = await fetch(`${API_URL}/api/validate`, {
+      // Make POST request to enhanced validation endpoint
+      const response = await fetch(`${API_URL}/api/validate-enhanced`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -112,13 +115,16 @@ const InspectionScreen = () => {
       console.log('Respuesta del backend:', result);
 
       if (response.ok) {
+        // Store validation results and show modal
+        setValidationResults(result);
+        setShowResultsModal(true);
+
+        // Show quick toast notification
         if (result.success) {
-          // All validations passed
-          toast.success(result.message || '✓ Todos los documentos son válidos');
+          toast.success('✓ Validación completada - Ver resultados');
         } else {
-          // Validation failed - show errors
-          const errorCount = result.errors?.length || 0;
-          toast.error(`Se encontraron ${errorCount} error(es) de validación`);
+          const errorCount = result.summary.failed_rules || 0;
+          toast.warning(`Validación completada con ${errorCount} error(es) - Ver resultados`);
 
           // Log errors to console for debugging
           if (result.errors && result.errors.length > 0) {
@@ -220,6 +226,12 @@ const InspectionScreen = () => {
           : selectedDocument.name === 'E-Manifest' ? 'emanifest'
           : 'prefile'
         ] : null}
+      />
+
+      <ValidationResultsModal
+        isOpen={showResultsModal}
+        onClose={() => setShowResultsModal(false)}
+        validationData={validationResults}
       />
     </div>
   );

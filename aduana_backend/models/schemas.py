@@ -266,3 +266,153 @@ class AllExtractedData(BaseModel):
                 }
             }
         }
+
+
+# ============================================================================
+# Enhanced Validation Response Models (Modal UI Support)
+# ============================================================================
+
+class FieldExtractionStatus(BaseModel):
+    """Estado de extracción de un campo individual"""
+    field_name: str = Field(..., description="Nombre técnico del campo")
+    field_label: str = Field(..., description="Etiqueta legible del campo")
+    value: str | float | int = Field(..., description="Valor extraído")
+    status: str = Field(..., description="success | not_found | low_confidence")
+    icon: str = Field(..., description="✅ | ❌ | ⚠️")
+    confidence: Optional[float] = Field(None, description="Nivel de confianza 0-1")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "field_name": "descripcion_mercancia",
+                "field_label": "Descripción de Mercancía",
+                "value": "Steel coils, hot rolled",
+                "status": "success",
+                "icon": "✅",
+                "confidence": 0.95
+            }
+        }
+
+
+class DocumentExtractionReport(BaseModel):
+    """Reporte detallado de extracción de un documento"""
+    document_type: str = Field(..., description="DODA | E-Manifest | Prefile | Placa")
+    document_name: str = Field(..., description="Nombre legible del documento")
+    total_fields: int = Field(..., description="Total de campos esperados")
+    extracted_fields: int = Field(..., description="Campos extraídos exitosamente")
+    not_found_fields: int = Field(..., description="Campos no encontrados")
+    confidence_score: float = Field(..., description="Confianza promedio 0-1")
+    fields: list[FieldExtractionStatus] = Field(..., description="Detalle de cada campo")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "document_type": "manifest",
+                "document_name": "E-Manifest (Manifiesto Electrónico)",
+                "total_fields": 9,
+                "extracted_fields": 7,
+                "not_found_fields": 2,
+                "confidence_score": 0.78,
+                "fields": []
+            }
+        }
+
+
+class ComparisonDetail(BaseModel):
+    """Detalle de comparación entre dos valores"""
+    label: str = Field(..., description="Etiqueta del campo")
+    value1: str = Field(..., description="Valor del primer documento")
+    value2: str = Field(..., description="Valor del segundo documento")
+    source1: str = Field(..., description="Fuente del primer valor")
+    source2: str = Field(..., description="Fuente del segundo valor")
+    matches: bool = Field(..., description="Si los valores coinciden")
+    similarity: Optional[float] = Field(None, description="Similitud 0-1 si aplica")
+    icon: str = Field(..., description="✅ | ❌ | ⚠️")
+
+
+class RuleValidationDetail(BaseModel):
+    """Detalle completo de validación de una regla"""
+    rule_id: str = Field(..., description="R1, R2, R3, R4, R5")
+    rule_name: str = Field(..., description="Nombre de la regla")
+    rule_description: str = Field(..., description="Descripción breve")
+    status: str = Field(..., description="passed | failed | warning | not_applicable")
+    icon: str = Field(..., description="✅ | ❌ | ⚠️ | ➖")
+    summary: str = Field(..., description="Resumen del resultado")
+    details: list[str] = Field(default_factory=list, description="Detalles adicionales")
+    comparisons: list[ComparisonDetail] = Field(default_factory=list, description="Comparaciones realizadas")
+    errors: list[ValidationError] = Field(default_factory=list, description="Errores específicos")
+    recommendation: Optional[str] = Field(None, description="Recomendación de acción")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "rule_id": "R5",
+                "rule_name": "Coincidencia de Operador",
+                "rule_description": "Verifica que el operador del formulario coincida con el del manifiesto",
+                "status": "passed",
+                "icon": "✅",
+                "summary": "El operador coincide con el manifiesto",
+                "details": ["Formulario: Andy Anderson", "Manifest: Andy Anderson", "Similitud: 100%"],
+                "comparisons": [],
+                "errors": [],
+                "recommendation": None
+            }
+        }
+
+
+class ValidationSummary(BaseModel):
+    """Resumen general de validación"""
+    total_rules: int = Field(default=5, description="Total de reglas validadas")
+    passed_rules: int = Field(..., description="Reglas que pasaron")
+    failed_rules: int = Field(..., description="Reglas que fallaron")
+    warning_rules: int = Field(..., description="Reglas con advertencias")
+    overall_status: str = Field(..., description="success | partial | failed")
+    confidence_average: float = Field(..., description="Confianza promedio de extracción 0-1")
+    processing_time: float = Field(..., description="Tiempo de procesamiento en segundos")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "total_rules": 5,
+                "passed_rules": 2,
+                "failed_rules": 3,
+                "warning_rules": 0,
+                "overall_status": "partial",
+                "confidence_average": 0.72,
+                "processing_time": 3.2
+            }
+        }
+
+
+class EnhancedValidationResponse(BaseModel):
+    """Respuesta expandida con toda la información para el modal"""
+    success: bool = Field(..., description="True si todas las validaciones pasaron")
+    message: str = Field(..., description="Mensaje resumen")
+    errors: list[ValidationError] = Field(default_factory=list, description="Lista de errores (compatibilidad)")
+
+    # Datos expandidos para el modal
+    summary: ValidationSummary = Field(..., description="Resumen general")
+    rules: list[RuleValidationDetail] = Field(..., description="Detalle de cada regla R1-R5")
+    extraction: list[DocumentExtractionReport] = Field(..., description="Reporte de extracción por documento")
+    timestamp: str = Field(..., description="Timestamp ISO 8601")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "success": False,
+                "message": "Se encontraron 3 errores de validación",
+                "errors": [],
+                "summary": {
+                    "total_rules": 5,
+                    "passed_rules": 2,
+                    "failed_rules": 3,
+                    "warning_rules": 0,
+                    "overall_status": "partial",
+                    "confidence_average": 0.72,
+                    "processing_time": 3.2
+                },
+                "rules": [],
+                "extraction": [],
+                "timestamp": "2025-10-26T14:32:15.123Z"
+            }
+        }

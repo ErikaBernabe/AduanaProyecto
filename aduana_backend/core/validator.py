@@ -307,24 +307,42 @@ def validate_r3_cruce_manifest_prefile(extracted_data: AllExtractedData) -> List
             severity="error"
         ))
 
-    # R3.2: Broker
+    # R3.2: Broker (primeros 3 dígitos del Entry Number)
     try:
-        if manifest.broker == "NO_ENCONTRADO" or prefile.broker == "NO_ENCONTRADO":
+        # Extract broker from Entry Number (first 3 digits)
+        # Entry format examples: "600258901", "231-2712401-9"
+        def extract_broker_from_entry(entry: str) -> str:
+            """Extract first 3 digits from Entry Number as Broker code"""
+            if entry == "NO_ENCONTRADO" or not entry:
+                return "NO_ENCONTRADO"
+            # Remove all non-numeric characters
+            digits = ''.join(c for c in entry if c.isdigit())
+            # Return first 3 digits
+            if len(digits) >= 3:
+                return digits[:3]
+            return "NO_ENCONTRADO"
+
+        broker_manifest = extract_broker_from_entry(manifest.numero_entry)
+        broker_prefile = extract_broker_from_entry(prefile.numero_entry)
+
+        logger.info(f"Broker codes - Manifest: '{broker_manifest}' (from {manifest.numero_entry}), Prefile: '{broker_prefile}' (from {prefile.numero_entry})")
+
+        if broker_manifest == "NO_ENCONTRADO" or broker_prefile == "NO_ENCONTRADO":
             errors.append(ValidationError(
                 rule_id="R3",
                 rule_name="Cruce Manifest/Prefile - Broker",
-                message="No se pudo extraer el broker de uno o ambos documentos",
+                message="No se pudo extraer el código de broker del número de entry de uno o ambos documentos",
                 severity="error"
             ))
-        elif not strings_match(manifest.broker, prefile.broker):
+        elif broker_manifest != broker_prefile:
             errors.append(ValidationError(
                 rule_id="R3",
                 rule_name="Cruce Manifest/Prefile - Broker",
-                message=f"El broker no coincide. Manifiesto: '{manifest.broker}', Prefile: '{prefile.broker}'",
+                message=f"El código de broker no coincide. Manifiesto: '{broker_manifest}' (Entry: {manifest.numero_entry}), Prefile: '{broker_prefile}' (Entry: {prefile.numero_entry})",
                 severity="error"
             ))
         else:
-            logger.info(f"✓ Broker matches: {manifest.broker}")
+            logger.info(f"✓ Broker code matches: {broker_manifest}")
     except Exception as e:
         logger.error(f"Error validating broker: {e}")
         errors.append(ValidationError(

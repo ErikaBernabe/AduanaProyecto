@@ -15,8 +15,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Image optimization settings
-MAX_WIDTH = 1024
-MAX_HEIGHT = 1024
+# Balanced resolution: 768px provides good quality for OCR while keeping costs reasonable
+MAX_WIDTH = 768
+MAX_HEIGHT = 768
+# Quality 85 provides sharp text edges with minimal compression artifacts
 JPEG_QUALITY = 85
 PNG_OPTIMIZE = True
 
@@ -111,18 +113,26 @@ def resize_image(image: Image.Image, max_width: int = MAX_WIDTH, max_height: int
         raise ValueError(f"Failed to resize image: {e}")
 
 
-def compress_image(image: Image.Image, quality: int = JPEG_QUALITY) -> bytes:
+def compress_image(image: Image.Image, quality: int = JPEG_QUALITY, grayscale: bool = False) -> bytes:
     """
-    Compress an image to JPEG format
+    Compress an image to JPEG format with optional grayscale conversion
 
     Args:
         image: PIL Image object
         quality: JPEG quality (1-100, default 85)
+        grayscale: Convert to grayscale for better compression (default False)
+                   Note: Disabled by default as it reduces text readability in complex documents
 
     Returns:
         Compressed image as bytes
     """
     try:
+        # Convert to grayscale for documents (reduces size ~60% without losing text clarity)
+        # DISABLED: Grayscale conversion reduces AI extraction accuracy for complex documents
+        if grayscale and image.mode == 'RGB':
+            image = image.convert('L')
+            logger.info("Converted to grayscale for better compression")
+
         buffer = io.BytesIO()
 
         # Save as JPEG with optimization
