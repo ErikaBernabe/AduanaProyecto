@@ -1,13 +1,18 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useToast } from '../hooks/useToast';
 import '../styles/LoginScreen.css';
 
 const LoginScreen = ({ onLoginSuccess }) => {
   const { register, handleSubmit } = useForm();
+  const toast = useToast();
 
   const onSubmit = (data) => {
-    console.log(data);
-    onLoginSuccess();
+    if (data.usuario === "eFrontera@gmail.com" && data.contraseña === "1234") {
+      onLoginSuccess();
+    } else {
+      toast.error("❌ Credenciales inválidas");
+    }
   };
 
   return (
