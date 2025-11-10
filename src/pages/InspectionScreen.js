@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaSignOutAlt } from 'react-icons/fa';
 import DocumentList from '../components/DocumentList';
 import DriverDataModal from '../components/DriverDataModal';
 import DocumentCaptureModal from '../components/DocumentCaptureModal';
@@ -7,7 +8,7 @@ import { INITIAL_DOCUMENTS } from '../constants/documents';
 import { useToast } from '../hooks/useToast';
 import '../styles/InspectionScreen.css';
 
-const InspectionScreen = () => {
+const InspectionScreen = ({ onLogout }) => {
   const toast = useToast();
   const [documents] = useState(INITIAL_DOCUMENTS);
   const [isDriverModalOpen, setIsDriverModalOpen] = useState(false);
@@ -162,6 +163,10 @@ const InspectionScreen = () => {
   return (
     <div className="inspection">
       <div className="inspection-header">
+        <button className="logout-button" onClick={onLogout} title="Cerrar Sesión">
+          <FaSignOutAlt />
+          <span>Cerrar Sesión</span>
+        </button>
         <img src="/fronterainspeccion.png" alt="Logo Inspección" className="inspection-logo" />
         <h1>Inspección de Documentos</h1>
         <p className="inspection-subtitle">

@@ -12,11 +12,15 @@ function App() {
     setIsLoggedIn(true);
   };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
   return (
     <ToastProvider>
       <ToastContainer />
       {isLoggedIn ? (
-        <InspectionScreen />
+        <InspectionScreen onLogout={handleLogout} />
       ) : (
         <LoginScreen onLoginSuccess={handleLogin} />
       )}
