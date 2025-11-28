@@ -98,6 +98,12 @@ def create_manifest_prompt() -> str:
 
 IMPORTANTE: Responde ÚNICAMENTE con el objeto JSON, sin texto adicional antes o después.
 
+INSTRUCCIONES ESPECIALES DE PLACAS:
+- Busca la seccion etiquetada como "Plate(s)".
+- Es posible que haya multiples placas listadas en varias lineas.
+- Identifica cual corresponde al tracto (generalmente placas de USA o asociadas a "Conveyance") y cual al remolque (generalmente placas de MX o asociadas a "Equipment").
+- Si hay dudas, extre la primera placa visible placa_tracto y la segunda como placa_remolque. 
+
 Campos requeridos:
 - placa_tracto: Número de placa del tracto/camión
 - placa_remolque: Número de placa del remolque/trailer
